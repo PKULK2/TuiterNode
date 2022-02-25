@@ -10,5 +10,5 @@ export default interface MessageDaoI {
     viewMessagesSent(uid: string): Promise<Message[]>;
     viewMessagesReceived(uid: string): Promise<Message[]>;
     viewAllMessages(uid: string): Promise<Message[]>;
-    viewMessageByUser(sentTo: string, sentFrom: string): Promise<any>;
+    updateMessage(sentTo: string, sentFrom: string, message: Message): Promise<any>;
 }

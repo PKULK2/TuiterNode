@@ -7,5 +7,5 @@ export default interface MessageControllerI {
     viewMessagesSent (req: Request, res: Response): void;
     viewMessagesReceived (req: Request, res: Response): void;
     viewAllMessages (req: Request, res: Response): void;
-    viewMessageByUser (req: Request, res: Response): void;
+    updateMessage (req: Request, res: Response): void;
 }

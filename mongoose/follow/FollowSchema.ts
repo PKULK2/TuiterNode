@@ -1,3 +1,7 @@
+/**
+ * @file implements the mongoose schema for the follow
+ * CRUD operations
+ */
 import mongoose, {Schema} from "mongoose";
 import Follow from "../../models/follow/Follow";
 

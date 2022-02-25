@@ -1,15 +1,15 @@
 import Bookmark from "../models/bookmarks/Bookmark";
 
 /**
- * @file Declares API for Follows related data access object methods
+ * @file Declares API for bookmarks related data access object methods
  */
 
 export default interface BookmarkDaoI {
-    bookmarkTuit(tuitBookmarked: string, userBookmarked: string): Promise<Bookmark>;
-    unBookmarkTuit(tuitBookmarked: string, userBookmarked: string): Promise<any>;
-    viewAllBookmarkedTuitsByUser(userBookmarked: string): Promise<Bookmark[]>;
+    bookmarkTuit(tid: string, uid: string): Promise<Bookmark>;
+    unBookmarkTuit(tid: string, uid: string): Promise<any>;
+    viewAllBookmarkedTuitsByUser(uid: string): Promise<Bookmark[]>;
     viewAllBookmarkedTuits(): Promise<Bookmark[]>;
-    viewOneBookmarkedTuit(tuitBookmarked: string, userBookmarked: string): Promise<any>;
+    viewOneBookmarkedTuit(uid: string): Promise<Bookmark>;
 
 
 }
