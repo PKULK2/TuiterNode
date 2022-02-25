@@ -35,13 +35,13 @@ export default class UserController implements UserControllerI {
             UserController.userController = new UserController();
 
             // for testing without postman. Not RESTful
-            app.get("/api/users/create",
+            /*app.post("/api/users/create",
                 UserController.userController.createUser);
-            app.get("/api/users/:uid/delete",
+            app.delete("/api/users/:uid/delete",
                 UserController.userController.deleteUser);
-            app.get("/api/users/delete",
+            app.delete("/api/users/delete",
                 UserController.userController.deleteAllUsers);
-
+*/
             // RESTful User Web service API
             app.get("/api/users",
                 UserController.userController.findAllUsers);
