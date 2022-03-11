@@ -12,6 +12,7 @@ const app = express();
 var cors = require('cors');
 app.use(cors());
 
+//mongoose.connect('mongodb://localhost:27017/Tuiter');
 mongoose.connect('mongodb+srv://PPK2000:Poorna-2000@cluster0.1murc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
 app.use(bodyParser.json())
 
