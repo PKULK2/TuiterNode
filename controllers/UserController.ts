@@ -88,6 +88,10 @@ export default class UserController implements UserControllerI {
         UserController.userDao.findUserById(req.params.uid)
             .then((user: User) => res.json(user));
 
+    findUserByCredentials = (req: Request, res: Response)  =>
+        UserController.userDao.findUserByCredentials(req.body.username, req.params.password)
+            .then((user: User) => res.json(user));
+
     /**
      * Creates a new user instance
      * @param {Request} req Represents request from client, including body

@@ -7,4 +7,5 @@ export default interface UserControllerI {
     deleteUser(req: Request, res: Response): void;
     updateUser(req: Request, res: Response): void;
     deleteUsersByUsername(req: Request, res: Response): void;
+    findUserByCredentials(req: Request, res: Response): void;
 }
