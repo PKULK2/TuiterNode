@@ -31,7 +31,9 @@ export default class TuitDao implements TuitDaoI{
      * @return Promise To be notified when tuits are retrieved from the database
      */
     findAllTuits = async (): Promise<Tuit[]> =>
-        TuitModel.find();
+        TuitModel.find()
+            .populate("postedBy")
+            .exec();
 
     /**
      * Uses TuitModel to retrieve all tuits by a given user
@@ -39,7 +41,10 @@ export default class TuitDao implements TuitDaoI{
      * @returns Promise To be notified when tuits are retrieved from the database
      */
     findAllTuitsByUser = async (uid: string): Promise<Tuit[]> =>
-        TuitModel.find({postedBy: uid});
+        TuitModel
+            .find({postedBy: uid})
+            .populate("postedBy")
+            .exec();
 
     /**
      * Uses TuitModel to retrieve all tuits by the ID
@@ -47,7 +52,8 @@ export default class TuitDao implements TuitDaoI{
      * @returns Promise To be notified when tuits are retrieved from the database
      */
     findTuitById = async (uid: string): Promise<any> =>
-        TuitModel.findById(uid)
+        TuitModel
+            .findById(uid)
             .populate("postedBy")
             .exec();
 
@@ -81,4 +87,7 @@ export default class TuitDao implements TuitDaoI{
      */
     deleteTuit = async (uid: string): Promise<any> =>
         TuitModel.deleteOne({_id: uid});
+
+    public deleteTuitByContent = async (tuit: string): Promise<any> =>
+        TuitModel.deleteMany({tuit:tuit});
 }
