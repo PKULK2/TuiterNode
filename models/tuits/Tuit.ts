@@ -12,8 +12,8 @@ import User from "../users/User";
  * @property {Date} postedOn Date tuit was posted
  */
 
-export default interface Tuit {
-    tuit: string,
-    postedBy: User,
-    postedOn?: Date,
-};
+export default class Tuit {
+    private tuit: string = '';
+    private postedOn: Date = new Date();
+    private postedBy: User | null = null;
+}

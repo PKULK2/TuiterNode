@@ -12,7 +12,7 @@ import TuitDaoI from "../interfaces/TuitDaoI";
  * @property {TuitDao} tuitDao Private single instance of UserDao
  */
 export default class TuitDao implements TuitDaoI{
-    private static tuitDao: TuitDao | null = null;
+    public static tuitDao: TuitDao | null = null;
 
     /**
      * Creates singleton DAO instance
@@ -24,7 +24,7 @@ export default class TuitDao implements TuitDaoI{
         }
         return TuitDao.tuitDao;
     }
-    private constructor() {}
+    public constructor() {}
 
     /**
      * Uses TuitModel to retrieve all the tuits
@@ -41,8 +41,8 @@ export default class TuitDao implements TuitDaoI{
      * @returns Promise To be notified when tuits are retrieved from the database
      */
     findAllTuitsByUser = async (uid: string): Promise<Tuit[]> =>
-        TuitModel
-            .find({postedBy: uid})
+        TuitModel.find({postedBy: uid})
+            .sort({'postedOn': -1})
             .populate("postedBy")
             .exec();
 
@@ -52,8 +52,7 @@ export default class TuitDao implements TuitDaoI{
      * @returns Promise To be notified when tuits are retrieved from the database
      */
     findTuitById = async (uid: string): Promise<any> =>
-        TuitModel
-            .findById(uid)
+        TuitModel.findById(uid)
             .populate("postedBy")
             .exec();
 
@@ -87,6 +86,18 @@ export default class TuitDao implements TuitDaoI{
      */
     deleteTuit = async (uid: string): Promise<any> =>
         TuitModel.deleteOne({_id: uid});
+
+    /**
+     * Updates the stats nested schema for a particular tuit
+     * @param {string} tid Primary key of tuit to be modified
+     * @param {any} newStats Nested schema representing tuits stats
+     * @returns {Promise} To be notified when tuit is updated in the database
+     */
+    public updateLikes = async (tid: string, newStats: any): Promise<any> =>
+        TuitModel.updateOne(
+            {_id: tid},
+            {$set: {stats: newStats}}
+        );
 
     public deleteTuitByContent = async (tuit: string): Promise<any> =>
         TuitModel.deleteMany({tuit:tuit});
