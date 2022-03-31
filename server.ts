@@ -24,7 +24,7 @@ app.use(cors({
     // support cookie header
     credentials: true,
     // must whitelists allowed domains(if using credentials)
-    origin: 'https://dreamy-wescoff-927d5f.netlify.app/'
+    origin: process.env.CORS_ORIGIN
 }));
 
 //session configure
