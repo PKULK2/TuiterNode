@@ -24,7 +24,7 @@ app.use(cors({
     // support cookie header
     credentials: true,
     // must whitelists allowed domains(if using credentials)
-    origin: 'http://localhost:3000'
+    origin: 'https://dreamy-wescoff-927d5f.netlify.app/'
 }));
 
 //session configure
@@ -33,7 +33,8 @@ let sess = {
     saveUninitialized: true,
     resave: true,
     cookie: {
-        secure: false
+        sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax',
+        secure: process.env.NODE_ENV === "production",
     }
 }
 
