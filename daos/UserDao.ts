@@ -12,7 +12,7 @@ import UserDaoI from "../interfaces/UserDaoI";
  * @property {UserDao} userDao Private single instance of UserDao
  */
 export default class UserDao implements UserDaoI {
-    private static userDao: UserDao | null = null;
+    public static userDao: UserDao | null = null;
 
     /**
      * Creates singleton DAO instance
@@ -25,7 +25,7 @@ export default class UserDao implements UserDaoI {
         return UserDao.userDao;
     }
 
-    private constructor() {}
+    public constructor() {}
 
     /**
      * Uses UserModel to retrieve all user documents from users collection

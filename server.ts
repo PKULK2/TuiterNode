@@ -11,6 +11,7 @@ import AuthenticationController from "./controllers/AuthenticationController";
 import TuitDao from "./daos/TuitDao";
 import LikeDao from "./daos/LikeDao";
 import DislikeDao from "./daos/DislikeDao";
+import UserDao from "./daos/UserDao";
 const cors = require('cors')
 const session = require("express-session");
 
@@ -57,13 +58,17 @@ app.get('/add/:a/:b', (req: Request, res: Response) =>
 const tuitDao = new TuitDao();
 const likeDao = new LikeDao();
 const dislikeDao = new DislikeDao();
+const userDao = new UserDao();
+
 const userController = UserController.getInstance(app);
 const followController = FollowController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
 const likeController = new LikeController(app, likeDao, tuitDao, dislikeDao)
 const messageControler = MessageController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
-AuthenticationController(app);
+//AuthenticationController(app);
+const authController = new AuthenticationController(app, userDao);
+
 
 
 const PORT = 4000;
