@@ -25,11 +25,11 @@ app.use(cors({
     // support cookie header
     credentials: true,
     // must whitelists allowed domains(if using credentials)
-    origin: process.env.CORS_ORIGIN
+    origin: ['http://localhost:3000', process.env.CORS_ORIGIN]
 }));
 
 //session configure
-let sess = {
+/*let sess = {
     secret: "process.env.SECRET",
     saveUninitialized: true,
     resave: true,
@@ -42,6 +42,23 @@ let sess = {
 if (process.env.ENV === 'PRODUCTION') {
     app.set('trust proxy', 1) // trust first proxy
     sess.cookie.secure = true // serve secure cookies
+}*/
+
+const SECRET = 'process.env.SECRET';
+//session configure
+let sess = {
+    secret: SECRET,
+    saveUninitialized: true,
+    resave: true,
+    cookie: {
+        secure: process.env.NODE_ENV === "production",
+        // sameSite: none allows cookies to be sent in all contexts
+        sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax',
+    }
+}
+
+if (process.env.NODE_ENV === 'production') {
+    app.set('trust proxy', 1) // trust first proxy
 }
 
 app.use(session(sess))
