@@ -25,7 +25,7 @@ app.use(cors({
     // support cookie header
     credentials: true,
     // must whitelists allowed domains(if using credentials)
-    origin: process.env.CORS_ORIGIN
+    origin: 'http://localhost:3000'
 }));
 
 //session configure
@@ -59,16 +59,13 @@ const tuitDao = new TuitDao();
 const likeDao = new LikeDao();
 const dislikeDao = new DislikeDao();
 const userDao = new UserDao();
-
 const userController = UserController.getInstance(app);
 const followController = FollowController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
 const likeController = new LikeController(app, likeDao, tuitDao, dislikeDao)
 const messageControler = MessageController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
-//AuthenticationController(app);
-const authController = new AuthenticationController(app, userDao);
-
+AuthenticationController(app);
 
 
 const PORT = 4000;

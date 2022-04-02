@@ -3,67 +3,50 @@ import UserDao from "../daos/UserDao";
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-export default class AuthenticationController {
-    app: Express;
-    userDao: UserDao;
-    constructor (app: Express, userDao: UserDao) {
-        this.app = app;
-        this.userDao = userDao;
-        app.post("/api/auth/signup", this.signup);
-        app.post("/api/auth/profile", this.profile);
-        app.post("/api/auth/logout", this.logout);
-        app.post("/api/auth/login", this.login);
-    }
-    signup = async (req: any, res: any) => {
+const AuthenticationController = (app: Express) => {
+
+    const userDao: UserDao = UserDao.getInstance();
+
+    //sign up
+    const signup = async (req: Request, res: Response) => {
         const newUser = req.body;
         const password = newUser.password;
+        //encrypt password for storing in database
         const hash = await bcrypt.hash(password, saltRounds);
         newUser.password = hash;
 
-        const existingUser = await this.userDao
+        const existingUser = await userDao
             .findUserByUsername(req.body.username);
+        //verify unique username
         if (existingUser) {
             res.sendStatus(403);
             return;
-        }
-        else {
-            const insertedUser = await this.userDao
+        } else {
+            const insertedUser = await userDao
                 .createUser(newUser);
+            // for security, return empty password back
             insertedUser.password = '';
+            // @ts-ignore
             req.session['profile'] = insertedUser;
             res.json(insertedUser);
         }
     }
-    profile = (req: any, res: any) => {
-        const profile = req.session['profile'];
-        if (profile) {
-            profile.password = "";
-            res.json(profile);
-        } else {
-            res.sendStatus(403);
-        }
-    }
 
-    logout = (req: any, res: any) => {
-        req.session.destroy();
-        res.sendStatus(200);
-    }
-
-    login = async (req: any, res: any) => {
+    //user login
+    const login = async (req: Request, res: Response) => {
         const user = req.body;
         const username = user.username;
         const password = user.password;
-        const existingUser = await this.userDao
+        const existingUser = await userDao
             .findUserByUsername(username);
-        if (!existingUser) {
-            res.sendStatus(403);
-            return;
-        }
 
-        const match = await bcrypt
-            .compare(password, existingUser.password);
+        // use bcrypt to decrypt the password stored in database,
+        // then compare with password passing from front-end
+        const match = await bcrypt.compare(password, existingUser.password);
+
         if (match) {
             existingUser.password = '*****';
+            // @ts-ignore
             req.session['profile'] = existingUser;
             res.json(existingUser);
         } else {
@@ -71,6 +54,29 @@ export default class AuthenticationController {
         }
     }
 
+    //return the content of profile property in session
+    const profile = (req: Request, res: Response) => {
+        // @ts-ignore
+        const profile = req.session['profile'];
+        if (profile) {
+            res.json(profile);
+        } else {
+            res.sendStatus(403);
+        }
+    }
 
+    //user logout, destroy session and release server-side memory
+    const logout = (req: Request, res: Response) => {
+        // @ts-ignore
+        req.session.destroy();
+        res.sendStatus(200);
+    }
 
+    // request mapping paths
+    app.post("/api/auth/signup", signup);
+    app.post("/api/auth/login", login);
+    app.post("/api/auth/profile", profile);
+    app.post("/api/auth/logout", logout);
 }
+
+export default AuthenticationController;
