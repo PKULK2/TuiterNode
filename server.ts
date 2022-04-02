@@ -25,7 +25,7 @@ app.use(cors({
     // support cookie header
     credentials: true,
     // must whitelists allowed domains(if using credentials)
-    origin: 'http://localhost:3000'
+    origin: process.env.CORS_ORIGIN
 }));
 
 //session configure
